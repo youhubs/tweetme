@@ -99,8 +99,7 @@ This is amazing!
         xhr.responseType = responseType
         xhr.open(method, url)
         xhr.onload = function(){
-            const serverResponse = xhr.response
-            const items = serverResponse.response
+            const items = xhr.response
             var finalTweetsStr = ""
             var i;
             for(i=0; i<items.length; i++){
