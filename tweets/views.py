@@ -5,7 +5,8 @@ from .models import Tweet
 
 # Create your views here.
 def index(request):
-    return HttpResponse("<h1>Hello World</h1>")
+    # return HttpResponse("<h1>Hello World</h1>")
+    return render(request, "pages/home.html", context={}, status=200)
 
 def tweet(request, tweet_id):
     """
