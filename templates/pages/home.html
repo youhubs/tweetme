@@ -15,6 +15,7 @@ This is amazing!
     <div class="col-10 col-md-4 mx-auto">
         <form class="form" id="tweet_add_form" method="POST" action="tweets/add">
             {% csrf_token %}
+            <div class="d-none alert alert-danger" id="tweet_add_form_error"></div>
             <input type="hidden" value="/" name="next"/>
             <textarea required="required" class="form-control" name="content" placeholder="Your tweet..."></textarea>
             <button type="submit" class="btn btn-primary">Tweet</button>
@@ -26,6 +27,16 @@ This is amazing!
 </div>
 
 <script>
+    function handleTweetFormError(msg, display){
+        var myErrorDiv = document.getElementById("tweet_add_form_error")
+        if (display === true){
+            myErrorDiv.setAttribute("class", "d-block alert alert-danger")
+            myErrorDiv.innerText = msg
+        } else {
+            myErrorDiv.setAttribute("class", "d-none alert alert-danger")
+        }
+    }
+
     function handleTweetAddFormSubmit(event){
         event.preventDefault()
         const myForm = event.target
@@ -48,7 +59,20 @@ This is amazing!
                 myForm.reset()
             } else if (xhr.status === 400){
                 const errorJson = xhr.response
-                console.log(errorJson)
+                // console.log(errorJson)
+                const contentError = errorJson.content
+                let msg;
+                if (contentError){
+                    msg = contentError[0]
+                    if (msg){
+                        handleTweetFormError(msg, true)
+                    } else {
+                        alert("An error occured. Please try again.")
+                    }
+                } else {
+                    alert("An error occured. Please try again.")
+                }
+                
             } else if (xhr.status === 500){
                 alert("There was a server error. Please try again.")
             }
