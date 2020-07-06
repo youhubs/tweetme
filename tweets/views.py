@@ -1,4 +1,3 @@
-import random
 from django.conf import settings
 from django.http import HttpResponse, Http404, JsonResponse
 from django.shortcuts import render, redirect # HttpResponseRedirect
@@ -16,7 +15,7 @@ def home(request, *args, **kwargs):
 
 def index(request, *args, **kwargs):
     qs = Tweet.objects.all()
-    tweet_list = [{"id": x.id, "content": x.content, "likes": random.randint(0,100) } for x in qs]
+    tweet_list = [x.serialize() for x in qs]
     data = {
         "isUser": False,
         "response": tweet_list
@@ -48,7 +47,7 @@ def add(request):
         # do other form related logic
         obj.save()
         if request.is_ajax():
-            return JsonResponse({}, status=201) # 201 create items
+            return JsonResponse(obj.serialize(), status=201) # 201 create items
         if next_url is not None and is_safe_url(next_url, ALLOWED_HOSTS):
             return redirect(next_url)
         form = TweetForm()

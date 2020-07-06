@@ -33,14 +33,22 @@ This is amazing!
         const url = myForm.getAttribute("action")
         const method = myForm.getAttribute("method")
         const xhr = new XMLHttpRequest()
+        const responseType = "json"
+        xhr.responseType = responseType
         xhr.open(method, url)
         xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest")
         xhr.setRequestHeader("X-REQUESTED-WITH", "XMLHttpRequest")
         xhr.onload = function(){
+            if (xhr.status === 201){
+                const newTweetJson = xhr.response
+                // const newTweetJson = JSON.parse(newTweet)
+                const newTweetElement = formatTweetElement(newTweetJson)
+                console.log(newTweetElement)
+            }
             // const serverResponse = xhr.response
             // console.log(serverResponse)
-            const tweetsEl = document.getElementById("tweets")
-            loadTweets(tweetsElement)
+            // const tweetsEl = document.getElementById("tweets")
+            // loadTweets(tweetsElement)
         }
         xhr.send(myFormData)
     }
