@@ -28,7 +28,21 @@ This is amazing!
 <script>
     function handleTweetAddFormSubmit(event){
         event.preventDefault()
+        const myForm = event.target
+        const myFormData = new FormData(myForm)
+        const url = myForm.getAttribute("action")
+        const method = myForm.getAttribute("method")
+        const xhr = new XMLHttpRequest()
+        xhr.open(method, url)
+        xhr.onload = function(){
+            // const serverResponse = xhr.response
+            // console.log(serverResponse)
+            const tweetsEl = document.getElementById("tweets")
+            loadTweets(tweetsElement)
+        }
+        xhr.send(myFormData)
     }
+
     const tweetAddForm = document.getElementById("tweet_add_form")
     tweetAddForm.addEventListener("submit", handleTweetAddFormSubmit)
 
