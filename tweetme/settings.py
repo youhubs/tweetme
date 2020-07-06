@@ -33,6 +33,7 @@ LOGIN_URL = "/login"
 
 INSTALLED_APPS = [
     'tweets',
+    'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
