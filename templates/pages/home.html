@@ -7,16 +7,16 @@ This is amazing!
 {% block content %}
 Welcome to Tweetme
 <div id="tweets">
-    Replace me
+    <Loading class="">Loading...</Loading>
 </div>
 <script>
     const tweetsElement = document.getElementById("tweets") // $("#tweets") - jquery
-    tweetsElement.innerHTML = "Loading..."
+    // tweetsElement.innerHTML = "Loading..."
 
-    var el1 = "<h1>Hi there 1</h1>"
-    var el2 = "<h1>Hi there 2</h1>"
-    var el3 = "<h1>Hi there 3</h1>"
-    tweetsElement.innerHTML = el1 + el2 + el3
+    // var el1 = "<h1>Hi there 1</h1>"
+    // var el2 = "<h1>Hi there 2</h1>"
+    // var el3 = "<h1>Hi there 3</h1>"
+    // tweetsElement.innerHTML = el1 + el2 + el3
 
     const xhr = new XMLHttpRequest()
     const method = "GET" // "POST"
@@ -26,10 +26,17 @@ Welcome to Tweetme
     xhr.responseType = responseType
     xhr.open(method, url)
     xhr.onload = function(){
-        //console.log(xhr.response)
         const serverResponse = xhr.response
-        var items = serverResponse.response
-        console.log(items)
+        const items = serverResponse.response
+        var finalTweetsStr = ""
+        var i;
+        for(i=0; i<items.length; i++){
+            console.log(i)
+            console.log(items[i])
+            var currentItem = "<div class='mb-4'><h1>" + items[i].id + "</h1>" + "<p>" + items[i].content + "</p></div>"
+            finalTweetsStr += currentItem
+        }
+        tweetsElement.innerHTML = finalTweetsStr
     }
     xhr.send()
 </script>
