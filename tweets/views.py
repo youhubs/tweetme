@@ -1,6 +1,6 @@
 import random
 from django.http import HttpResponse, Http404, JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect # HttpResponseRedirect
 
 from .forms import TweetForm
 from .models import Tweet
@@ -37,9 +37,12 @@ def tweet(request, tweet_id, *args, **kwargs):
 
 def add(request):
     form = TweetForm(request.POST or None)
+    next_url = request.POST.get("next") or None
     if form.is_valid():
         obj = form.save(commit=False)
         # do other form related logic
         obj.save()
+        if next_url is not None:
+            return redirect(next_url)
         form = TweetForm()
     return render(request, "components/form.html", context={"form": form})
