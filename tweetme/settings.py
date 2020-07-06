@@ -28,6 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', 'youhubs.com']
 LOGIN_URL = "/login"
+MAX_TWEET_LENGTH = 200
 
 # Application definition
 

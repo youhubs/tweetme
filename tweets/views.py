@@ -5,6 +5,7 @@ from django.utils.http import is_safe_url
 
 from .forms import TweetForm
 from .models import Tweet
+from .serializers import TweetSerializer
 
 ALLOWED_HOSTS = settings.ALLOWED_HOSTS
 
@@ -40,6 +41,13 @@ def tweet(request, tweet_id, *args, **kwargs):
     return JsonResponse(data, status=status)
 
 def add(request):
+    serializer = TweetSerializer(data=request.POST or None)
+    if serializer.is_valid():
+        serializer.save(user=request.user)
+        return JsonResponse(serializer.data, status=201)
+    return JsonResponse({}, status=400)
+
+def add_pure_django(request):
     # print('ajax:', request.is_ajax())
     user = request.user
     if not request.user.is_authenticated:
