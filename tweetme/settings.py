@@ -27,7 +27,7 @@ SECRET_KEY = 'k_dx)1x*em1eet2ao41lbnt$twzdchezh60(78p5=v@k7dsu8='
 DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', 'youhubs.com']
-
+LOGIN_URL = "/login"
 
 # Application definition
 
