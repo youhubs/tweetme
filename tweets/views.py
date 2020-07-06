@@ -3,7 +3,8 @@ from django.http import HttpResponse, Http404, JsonResponse
 from django.shortcuts import render, redirect # HttpResponseRedirect
 from django.utils.http import is_safe_url
 
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from .forms import TweetForm
 from .models import Tweet
@@ -33,6 +34,8 @@ def tweet(request, tweet_id):
     return Response(serializer.data, status=200)
 
 @api_view(['POST']) # http method == POST
+# @authentication_classes([SessionAuthentication])
+@permission_classes([IsAuthenticated])
 def add(request):
     serializer = TweetSerializer(data=request.POST or None)
     if serializer.is_valid(raise_exception=True):
