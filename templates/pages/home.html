@@ -5,5 +5,21 @@ This is amazing!
 {% endblock head_title %}
 
 {% block content %}
-<h1> Hello World </h1>
+Welcome to Tweetme
+<script>
+    const xhr = new XMLHttpRequest()
+    const method = "GET" // "POST"
+    const url = "tweets"
+    const responseType = "json"
+
+    xhr.responseType = responseType
+    xhr.open(method, url)
+    xhr.onload = function(){
+        //console.log(xhr.response)
+        const serverResponse = xhr.response
+        var items = serverResponse.response
+        console.log(items)
+    }
+    xhr.send()
+</script>
 {% endblock content %}
