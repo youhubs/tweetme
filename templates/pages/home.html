@@ -34,6 +34,8 @@ This is amazing!
         const method = myForm.getAttribute("method")
         const xhr = new XMLHttpRequest()
         xhr.open(method, url)
+        xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest")
+        xhr.setRequestHeader("X-REQUESTED-WITH", "XMLHttpRequest")
         xhr.onload = function(){
             // const serverResponse = xhr.response
             // console.log(serverResponse)
