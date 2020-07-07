@@ -8,7 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from .forms import TweetForm
 from .models import Tweet
-from .serializers import TweetSerializer, TweetActionSerializer
+from .serializers import TweetSerializer, TweetAddSerializer, TweetActionSerializer
 
 ALLOWED_HOSTS = settings.ALLOWED_HOSTS
 
@@ -37,7 +37,7 @@ def tweet(request, tweet_id):
 # @authentication_classes([SessionAuthentication])
 @permission_classes([IsAuthenticated])
 def add(request):
-    serializer = TweetSerializer(data=request.POST or None)
+    serializer = TweetAddSerializer(data=request.POST or None)
     if serializer.is_valid(raise_exception=True):
         serializer.save(user=request.user)
         return Response(serializer.data, status=201)
