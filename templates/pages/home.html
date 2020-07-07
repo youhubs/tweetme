@@ -27,6 +27,22 @@ This is amazing!
 </div>
 
 <script>
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
     function handleTweetFormError(msg, display){
         var myErrorDiv = document.getElementById("tweet_add_form_error")
         if (display === true){
@@ -122,12 +138,15 @@ This is amazing!
             action: "like"
         })
         const xhr = new XMLHttpRequest()
+        const csrftoken = getCookie('csrftoken');
         xhr.open(method, url)
         xhr.setRequestHeader("Content-Type", "application/json")
         xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest")
         xhr.setRequestHeader("X-REQUESTED-WITH", "XMLHttpRequest")
+        xhr.setRequestHeader("X-CSRFToken", csrftoken)
         xhr.onload = function(){
-            console.log(xhr.status, xhr.response)
+            // console.log(xhr.status, xhr.response)
+            loadTweets(tweetsContainerElement) // react.js handle this state much better
         }
         xhr.send(data)
     }

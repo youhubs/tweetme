@@ -62,7 +62,7 @@ def like_action(request):
     """
     Action options: like, unlike, retweet
     """
-    serializer = TweetActionSerializer(data=request.POST)
+    serializer = TweetActionSerializer(data=request.data)
     if serializer.is_valid(raise_exception=True):
         data = serializer.validated_data
         tweet_id = data.get("id")
@@ -73,11 +73,13 @@ def like_action(request):
         obj = qs.first()
         if action == "like":
             obj.likes.add(request.user)
+            serializer = TweetSerializer(obj)
+            return Response(serializer.data, status=200)
         elif action == "unlike":
             obj.likes.remove(request.user)
         elif action == "retweet":
             pass
-    return Response({"message": "Tweet romoved."}, status=200)
+    return Response({}, status=200)
 
 def index_pure_django(request, *args, **kwargs):
     qs = Tweet.objects.all()
