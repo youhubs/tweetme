@@ -67,6 +67,7 @@ def like_action(request):
         data = serializer.validated_data
         tweet_id = data.get("id")
         action = data.get("action")
+        content = data.get("content")
         qs = Tweet.objects.filter(id=tweet_id)
         if not qs.exists():
             return Response({}, status=404)
@@ -78,7 +79,9 @@ def like_action(request):
         elif action == "unlike":
             obj.likes.remove(request.user)
         elif action == "retweet":
-            pass
+            new_tweet = Tweet.objects.create(user=request.user, content=content, parent=obj)
+            serializer = TweetSerializer(new_tweet)
+            return Response(serializer.data, status=200)
     return Response({}, status=200)
 
 def index_pure_django(request, *args, **kwargs):

@@ -7,10 +7,11 @@ User = settings.AUTH_USER_MODEL
 # Create your models here.
 class TweetLike(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    tweet = models.ForeignKey("Tweet", on_delete=models.CASCADE)
+    tweet = models.ForeignKey("Tweet", on_delete=models.CASCADE) # "Tweet"
     timestamp = models.DateTimeField(auto_now_add=True)
 
 class Tweet(models.Model):
+    parent = models.ForeignKey("self", null=True, on_delete=models.SET_NULL) # self!!
     user = models.ForeignKey(User, on_delete=models.CASCADE) # many users can have many tweets
     likes = models.ManyToManyField(User, related_name="liking_users", blank=True, through=TweetLike)
     content = models.TextField(blank=True, null=True)
