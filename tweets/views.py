@@ -8,7 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from .forms import TweetForm
 from .models import Tweet
-from .serializers import TweetSerializer
+from .serializers import TweetSerializer, TweetActionSerializer
 
 ALLOWED_HOSTS = settings.ALLOWED_HOSTS
 
@@ -54,6 +54,29 @@ def delete(request, tweet_id):
         return Response({"message": "You can not delete this tweet."}, status=404)
     obj = qs.first()
     obj.delete()
+    return Response({"message": "Tweet romoved."}, status=200)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def like_action(request):
+    """
+    Action options: like, unlike, retweet
+    """
+    serializer = TweetActionSerializer(request.POST)
+    if serializer.is_valid(raise_exception=True):
+        data = serializer.validated_data
+        tweet_id = data.get("id")
+        action = data.get("action")
+        qs = Tweet.objects.filter(id=tweet_id)
+        if not qs.exists():
+            return Response({}, status=404)
+        obj = qs.first()
+        if action == "like":
+            obj.likes.add(request.user)
+        elif action == "unlike":
+            obj.likes.remove(request.user)
+        elif action == "retweet":
+            pass
     return Response({"message": "Tweet romoved."}, status=200)
 
 def index_pure_django(request, *args, **kwargs):
