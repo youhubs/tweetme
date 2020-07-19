@@ -1,0 +1,1 @@
+This is a mini tweeter project with Django framework.
